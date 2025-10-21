@@ -53,7 +53,7 @@ export const createFile = async (req: Request, res: Response) => {
             name: finalName, // Use the final name (with extension for files)
             parent,
             isFolder,
-            path: relativePath, // This is the relative path of the containing directory
+            path: relativePath.replace(/\\/g, '/'), // This is the relative path of the containing directory
         });
 
         await newFile.save();
@@ -133,10 +133,6 @@ export const getFiles = async (req: Request, res: Response) => {
             searchPath = '/';
         }
 
-        if (searchPath !== '/' && !searchPath.endsWith('/')) {
-            searchPath = `${searchPath}/`;
-        }
-        
         const query = { 
             path: searchPath 
         };
